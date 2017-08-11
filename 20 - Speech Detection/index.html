@@ -12,7 +12,38 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const body = document.querySelector('body');
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
 
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+recognition.addEventListener('result', e => {
+  const transcript = Array.from(e.results)
+    .map(result => result[0])
+    .map(result => result.transcript)
+    .join('')
+
+    p.textContent = transcript;
+    if(e.results[0].isFinal) {
+      p = document.createElement('p');
+      words.appendChild(p);
+    }
+    let color = '';
+    if(transcript.includes(`background red`)) {
+      body.style.background = `red`;
+    }
+    if(transcript.includes(`background default`)) {
+      body.style.background = `#ffc600`;
+    }
+})
+
+recognition.addEventListener('end', recognition.start);
+
+
+recognition.start();
 </script>
 
 
