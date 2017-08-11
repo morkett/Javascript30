@@ -5,6 +5,7 @@
   <title>Videos</title>
 </head>
 <body>
+  <p class="totalTime"></p>
   <ul class="videos">
     <li data-time="5:43">
       Video 1
@@ -177,11 +178,47 @@
     <li data-time="1:56">
       Video 57
     </li>
-    <li data-time="4:04">
+    <li data-time="7:22">
       Video 58
     </li>
   </ul>
 <script>
+
+  const timeNodes = Array.from(document.querySelectorAll('[data-time]'));
+
+  const seconds = timeNodes
+    .map(node => node.dataset.time)
+    .map(timeCode => {
+      const [mins, secs] = timeCode.split(':').map(parseFloat);
+      return (mins * 60) + secs
+      console.log(secs);
+    })
+    .reduce((total, vidSeconds) => total + vidSeconds);
+
+    let secondsLeft = seconds;
+    const hours = Math.floor(secondsLeft / 3600);
+    secondsLeft = secondsLeft % 3600;
+
+    let mins = Math.floor(secondsLeft / 60);
+    secondsLeft = secondsLeft % 60;
+    if (mins < 10) {
+      mins = `0${mins}`
+    }
+    if (secondsLeft < 10) {
+      secondsLeft = `0${secondsLeft}`
+    }
+
+
+
+
+    console.log(hours, mins, secondsLeft);
+
+    const totalTime = document.querySelector('.totalTime');
+
+    totalTime.innerHTML = `
+      Total Time:
+      ${hours}:${mins}:${secondsLeft}
+    `
 </script>
 </body>
 </html>
